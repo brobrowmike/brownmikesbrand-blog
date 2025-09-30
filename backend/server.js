@@ -11,7 +11,8 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.MONGO_URI; 
+const uri = process.env.MONGO_URI;
+console.log("SERVER IS TRYING TO CONNECT TO:", uri); 
 mongoose.connect(uri);
 
 const connection = mongoose.connection;

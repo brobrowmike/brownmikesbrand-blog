@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    default: "Mike"
+    default: "SUCCESS"
   },
 }, { timestamps: true });
 

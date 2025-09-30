@@ -10,7 +10,7 @@ function App() {
       try {
         // In Codespaces, we need to find the backend's address dynamically
         const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
-        const response = await axios.get(`${backendUrl}/api/posts`);
+        const response = await axios.get('https://brownmikesbrand-blog.onrender.com/api/posts');
         setPosts(response.data);
       } catch (err) {
         console.error("There was an error fetching the posts", err);

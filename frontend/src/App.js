@@ -45,13 +45,46 @@ function HomePage() {
   );
 }
 
-// Placeholder for the Single Post Page
+// Upgraded Single Post Page component
 function PostPage() {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { postId } = useParams(); // 1. Get the postId from the URL
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const backendUrl = 'https://brownmikesbrand-blog.onrender.com';
+        // 2. Use the postId to ask the backend for one specific post
+        const response = await axios.get(`${backendUrl}/api/posts/${postId}`);
+        setPost(response.data);
+      } catch (err) {
+        console.error("There was an error fetching the post", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [postId]); // 3. Re-run this if the postId ever changes
+
+  if (loading) {
+    return <main style={{ padding: '20px' }}><p>Loading post...</p></main>;
+  }
+
+  if (!post) {
+    return <main style={{ padding: '20px' }}><p>Post not found.</p></main>;
+  }
+
+  // 4. Display the full title and content
   return (
-    <main style={{ padding: '20px', textAlign: 'left' }}>
-      <h2>Single Post Page</h2>
-      <p>This is where the full content of an article will go.</p>
-      <Link to="/">Back to Home</Link>
+    <main style={{ padding: '20px', maxWidth: '800px', margin: '20px auto', textAlign: 'left', lineHeight: '1.6' }}>
+      <h1>{post.title}</h1>
+      <p style={{ color: 'lightgray', fontStyle: 'italic' }}>by {post.author}</p>
+      <div style={{ marginTop: '40px', whiteSpace: 'pre-wrap' }}>
+        {post.content}
+      </div>
+      <Link to="/" style={{ display: 'block', marginTop: '40px', color: '#61dafb' }}>← Back to Home</Link>
     </main>
   );
 }

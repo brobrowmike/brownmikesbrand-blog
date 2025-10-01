@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Routes, Route, Link } from 'react-router-dom'; // Import new tools
 import './App.css';
 
 // Component for the Homepage (list of posts)
 function HomePage() {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // 1. Add a new state for loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -17,18 +17,16 @@ function HomePage() {
       } catch (err) {
         console.error("There was an error fetching the posts", err);
       } finally {
-        setLoading(false); // 2. When the fetch is done, set loading to false
+        setLoading(false);
       }
     };
     fetchPosts();
   }, []);
 
-  // 3. If we are loading, show a simple message
   if (loading) {
     return <main style={{ padding: '20px' }}><p>Loading posts...</p></main>;
   }
 
-  // 4. If not loading, show the posts (or the 'no posts' message)
   return (
     <main style={{ padding: '20px' }}>
       {posts.length > 0 ? (
@@ -46,3 +44,33 @@ function HomePage() {
     </main>
   );
 }
+
+// Placeholder for the Single Post Page
+function PostPage() {
+  return (
+    <main style={{ padding: '20px', textAlign: 'left' }}>
+      <h2>Single Post Page</h2>
+      <p>This is where the full content of an article will go.</p>
+      <Link to="/">Back to Home</Link>
+    </main>
+  );
+}
+
+// Main App component now handles routing
+function App() {
+  return (
+    <div className="App" style={{ backgroundColor: '#282c34', color: 'white', minHeight: '100vh' }}>
+      <header style={{ padding: '20px', textAlign: 'center' }}>
+        <h1>The Balanced Grind</h1>
+        <h2>- Brownmikes Brand -</h2>
+      </header>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/posts/:postId" element={<PostPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App; // This was the missing line
